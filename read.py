@@ -17,15 +17,16 @@ lastrow = 127433
 temp = pandas.read_excel('datos/Planilla VILLA.xlsx', usecols=col, header=None, skiprows=firstrow-1,nrows=lastrow-firstrow+1)
 
 # Imputation
-temp.fillna(temp.mean(), inplace=True) # reemplazo los nan por el valor medio
+#temp.fillna(temp.mean(), inplace=True) # reemplazo los nan por el valor medio
+values = temp.interpolate(method='akima') # interpolo con splines
 
 # Serie de tiempo
 plt.figure(1)
-plt.plot(temp)
+plt.plot(values)
 
 # Calculo la FFT
 t = np.arange(lastrow-firstrow+1)
-fft = np.fft.fft(temp.values)
+fft = np.fft.fft(values)
 freq = np.fft.fftfreq(t.shape[-1])
 fft = np.fft.fftshift(fft)
 freq = np.fft.fftshift(freq)
